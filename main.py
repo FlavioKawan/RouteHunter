@@ -1,4 +1,4 @@
-from crawler import requisitar_url
+from crawler import controle_de_fila
 
 url = "https://tecnocomp.com.br"
-requisitar_url(url)
+controle_de_fila(url)

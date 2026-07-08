@@ -9,13 +9,16 @@ def controle_de_fila(url):
     visitadas = set()
     while fila:
         url_atual = fila.popleft()
-        #verifica se a url na fila na foi visitada
+        # verifica se a url na fila na foi visitada
         if url_atual in visitadas:
             continue
         visitadas.add(url_atual)
-        #visita a url
+        visita(url_atual, fila, visitadas)
+        print(visitadas)
 
-def visita(url_atual):
+        # visita a url
+
+def visita(url_atual, fila, visitadas):
     response = requests.get(url_atual)
     if response.status_code == 200:
         bs = BeautifulSoup(response.text, "html.parser")
@@ -26,5 +29,5 @@ def visita(url_atual):
             if urlparse(convert_link).scheme in ['http' , 'https']:
                 if convert_link not in visitadas:
                     fila.append(convert_link)
-                    print(fila)
-          
+    else:
+        print(f"erro{response.status_code}")
