@@ -1,4 +1,4 @@
-from crawler import controle_de_fila
+from crawler import queue_control
 
-url = "https://tecnocomp.com.br"
-controle_de_fila(url)
+url = "https://rdcviagens.com.br/"
+queue_control(url)
