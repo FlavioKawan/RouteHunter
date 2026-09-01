@@ -15,20 +15,13 @@ def queue_control(url):
             continue
         visited_urls.add(current_url)
         print(current_url)
-<<<<<<< HEAD
-        visit_url(current_url)
-        extract_links(visited_urls)
-    
-
-=======
         html = visit_url(current_url)
         if html is None:
             continue
         extract_links(html, current_url, visited_urls, queue, domain)
         
 
-       
->>>>>>> 34c2513 (fix: trata falha ao visitar URL)
+ 
 def domain_filter(url, domain):
     #pega somente a url encontrada
     filter = urlparse(url).netloc
@@ -43,37 +36,17 @@ def visit_url(current_url):
     response = requests.get(current_url)
     if response.status_code == 200:
         return response.text
-<<<<<<< HEAD
     return None
-
-
-def extract_links(html, current_url):
-    soup = BeautifulSoup(html, "html.parser")
-    links = soup.find_all('a', href=True) 
-=======
-    else:
-        return None
 
 
 def extract_links(html, current_url, visited_urls, queue, domain):
     soup = BeautifulSoup(html, "html.parser")
     links = soup.find_all('a', href=True) 
     new_links = []
->>>>>>> 34c2513 (fix: trata falha ao visitar URL)
     for link in links:
         absolute_url = urljoin(current_url, link['href'])
         #verifica se é http ou https
         if urlparse(absolute_url).scheme in ['http' , 'https']:
-<<<<<<< HEAD
-
-            
-        #
-        #    if absolute_url not in visited_urls and absolute_url not in queue:
-        #        if domain_filter(absolute_url, domain):
-        #           queue.append(absolute_url)
-    
-=======
             if absolute_url not in visited_urls and absolute_url not in queue:
                 if domain_filter(absolute_url, domain):
                     queue.append(absolute_url)
->>>>>>> 34c2513 (fix: trata falha ao visitar URL)
