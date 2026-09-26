@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from collections import deque
 from urllib.parse import urljoin, urlparse
-
+#controle de fila 
 def queue_control(url):
     queue = deque()
     queue.append(url)
@@ -19,9 +19,8 @@ def queue_control(url):
         if html is None:
             continue
         extract_links(html, current_url, visited_urls, queue, domain)
-        
 
- 
+#filtra a url para pegar somente o dominio
 def domain_filter(url, domain):
     #pega somente a url encontrada
     filter = urlparse(url).netloc
@@ -30,15 +29,32 @@ def domain_filter(url, domain):
     else:
         return False
 
+#visita a url e retorna o html
 
-# visita a url
 def visit_url(current_url):
-    response = requests.get(current_url)
-    if response.status_code == 200:
-        return response.text
-    return None
+    try:
+        response = requests.get(current_url, timeout=10, headers={'User-Agent': 'RouteHunter/5.0'})
+        if response.status_code == 200:
+            return response.text
+        else:
+            print(f"Failed to retrieve {current_url}. Status code: {response.status_code}")
+        return None
+    
+    except requests.RequestException as e:
+        print(f"Error visiting {current_url}: {e}")
+        return None
+
+    except requests.Timeout as e:
+        print(f"Timeout visiting {current_url}: {e}")
+        return None
+
+    except requests.ConnectionError as e:
+        print(f"Connection error visiting {current_url}: {e}")
+        return None
+    
 
 
+#extrai os links do html e adiciona na fila
 def extract_links(html, current_url, visited_urls, queue, domain):
     soup = BeautifulSoup(html, "html.parser")
     links = soup.find_all('a', href=True) 
