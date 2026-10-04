@@ -1,3 +1,3 @@
 from crawler import queue_control
-url = "https://tecnocomp.com.br"
+url = ""
 queue_control(url)
